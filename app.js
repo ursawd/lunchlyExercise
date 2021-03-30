@@ -7,19 +7,20 @@ const routes = require("./routes");
 
 const app = express();
 
-// Parse body for urlencoded (non-JSON) data
-app.use(bodyParser.urlencoded({ extended: false }));
+// Parse body for urlencoded (non-JSON) data bodyParser deprecated
+// app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 
 nunjucks.configure("templates", {
   autoescape: true,
-  express: app
+  express: app,
 });
 
 app.use(routes);
 
 /** 404 handler */
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   const err = new Error("Not Found");
   err.status = 404;
 

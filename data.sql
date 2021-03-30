@@ -1,3 +1,7 @@
+DROP DATABASE IF EXISTS lunchly;
+
+CREATE DATABASE lunchly;
+
 \c lunchly 
 
 DROP TABLE IF EXISTS reservations;
