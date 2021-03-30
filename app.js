@@ -2,7 +2,7 @@
 
 const express = require("express");
 const nunjucks = require("nunjucks");
-const bodyParser = require("body-parser");
+// const bodyParser = require("body-parser");
 const routes = require("./routes");
 
 const app = express();
