@@ -70,6 +70,35 @@ class Customer {
     return new Customer(customer);
   }
 
+  /** Return Top 10 customers by # of reservations */
+  static async top10() {
+    const result = await db.query(`
+    SELECT customer_id,
+    COUNT(id) 
+    FROM reservations
+    GROUP BY  customer_id
+    ORDER BY COUNT(id) DESC 
+    LIMIT 10
+    `);
+    //--
+    const custArray = result.rows.map(async function (row, index) {
+      const cusResult = await db.query(
+        `SELECT id, 
+           first_name AS "firstName",  
+           last_name AS "lastName", 
+           phone, 
+           notes
+         FROM customers
+         WHERE id = $1`,
+        [result.rows[index].customer_id]
+      );
+      return cusResult;
+    });
+    let custResults = await Promise.all(custArray);
+
+    return custResults.map((result) => new Customer(result.rows[0]));
+  }
+
   /** get all reservations for this customer. */
 
   async getReservations() {
@@ -102,3 +131,27 @@ class Customer {
 }
 
 module.exports = Customer;
+
+// /** Return Top 10 customers by # of reservations */
+// static async top10() {
+//   const result = await db.query(`
+//   SELECT customer_id,
+//   COUNT(id)
+//   FROM reservations
+//   GROUP BY  customer_id
+//   ORDER BY COUNT(id) DESC
+//   LIMIT 10
+//   `);
+//   console.log(result);
+//   const custResults = await db.query(
+//     `SELECT id,
+//        first_name AS "firstName",
+//        last_name AS "lastName",
+//        phone,
+//        notes
+//      FROM customers
+//      WHERE id = $1`,
+//     [result.rows[0].customer_id]
+//   );
+//   return custResults.rows.map((c) => new Customer(c));
+// }

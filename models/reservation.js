@@ -57,6 +57,6 @@ class Reservation {
       );
     }
   }
-}
+} // end of class
 
 module.exports = Reservation;
