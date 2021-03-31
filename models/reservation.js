@@ -14,6 +14,17 @@ class Reservation {
     this.startAt = startAt;
     this.notes = notes;
   }
+  get numGuests() {
+    return this._numGuests;
+  }
+  set numGuests(numGuests) {
+    if (numGuests < 1) {
+      const err = new Error(`Number of guest must be > 0`);
+      err.status = 400;
+      throw err;
+    }
+    this._numGuests = numGuests;
+  }
 
   /** formatter for startAt */
 
